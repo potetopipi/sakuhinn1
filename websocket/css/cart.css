@@ -1,0 +1,92 @@
+/* カートアイテムリスト */
+ul {
+    list-style-type: none;
+    padding: 0;
+    width: 80%;  /* 幅を設定してリストのサイズを調整 */
+    max-width: 600px; /* 最大幅を設定してリストが広がりすぎないように */
+    margin: 0 auto; /* 左右のマージンを自動設定して中央配置 */
+}
+
+li {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+h1 {
+    font-size: 28px;
+    color: #2c3e50;
+    text-align: center;  /* これを追加して中央揃え */
+    margin-bottom: 20px;
+}
+
+li:hover {
+    background-color: #f1f1f1;
+}
+
+/* 商品名と価格 */
+li span {
+    font-size: 16px;
+}
+
+/* 削除ボタン */
+button[type="submit"] {
+    padding: 5px 15px;
+    font-size: 14px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #c0392b;
+}
+
+button[type="submit"]:active {
+    background-color: #e74c3c;
+    transform: scale(0.98);
+}
+
+/* 合計金額 */
+p {
+    font-size: 18px;
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+/* 購入ボタン */
+form button[type="submit"] {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #80cbc4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: block;
+    margin: 20px auto 0;
+}
+
+form button[type="submit"]:hover {
+    background-color: #00796b;
+}
+
+form button[type="submit"]:active {
+    background-color: #00796b;
+    transform: scale(0.98);
+}
+
+/* カートが空の場合 */
+p {
+    font-size: 18px;
+    color: #e74c3c;
+    text-align: center;
+}

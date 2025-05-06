@@ -1,0 +1,95 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #e0e0e0;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex; /* 中央揃えのためにフレックスボックスを使用 */
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* ビューポートの高さに合わせる */
+}
+
+.container {
+    max-width: 400px;
+    width: 100%; /* 幅を100%に設定 */
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    text-align: left;
+    animation: fadeIn 0.5s ease; /* フェードイン効果 */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+h1 {
+    color: #007BFF;
+    margin-bottom: 30px;
+    text-align: center; /* タイトルを中央揃え */
+}
+
+form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    width: 100%;
+    text-align: left;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s;
+    box-sizing: border-box; /* パディングを含めて計算する */
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+.button-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+button {
+    padding: 15px 30px; /* パディングを大きく */
+    font-size: 16px; /* フォントサイズを調整 */
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s; /* ホバー効果のトランジション */
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05); /* ホバー時に少し拡大 */
+}
+
+.error-message {
+    color: red;
+    margin-top: 20px;
+    text-align: center; /* エラーメッセージを中央揃え */
+}

