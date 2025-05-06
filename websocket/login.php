@@ -14,32 +14,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user_name = $_POST['user_name'];
     $password = $_POST['password'];
 
-    // PDOでSQLite3に接続
     try {
-        $pdo = new PDO('sqlite:kadai.db', null, null, [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-        ]);
+        // SQLiteに接続（ファイル名は適宜変更）
+        $pdo = new PDO('sqlite:kadai.db');
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // SQLインジェクションが可能なクエリ（セキュリティ上、プリペアドステートメントを使用した方が良い）
-        $sql = "SELECT user_name, password FROM users WHERE user_name = :user_name AND password = :password";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute([
-            ':user_name' => $user_name,
-            ':password' => $password
-        ]);
+        // 🔥 プリペアドステートメントを使わず、直接変数を埋め込む（SQLインジェクションの温床）
+        $sql = "SELECT user_name, password FROM users WHERE user_name = '$user_name' AND password = '$password'";
+        $stmt = $pdo->query($sql);  // 🔥 queryで直接実行
         $user = $stmt->fetch();
 
-        // ログイン処理
         if ($user) {
-            $_SESSION['user_name'] = $user['user_name']; // セッションにユーザー名を格納
+            $_SESSION['user_name'] = $user['user_name'];
 
             // セッションIDを取得
             $sessionId = session_id();
             $sessionData = serialize($_SESSION);
             $timestamp = time();
 
-            // セッションIDとデータをsessionsテーブルに保存
+            // セッション保存（セキュアではないが保持）
             $stmt = $pdo->prepare("REPLACE INTO sessions (id, data, timestamp) VALUES (:id, :data, :ts)");
             $stmt->execute([
                 ':id' => $sessionId,
@@ -47,17 +40,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':ts' => $timestamp
             ]);
 
-            // ログイン成功後にmenu.phpにリダイレクト
+            // ログイン成功
             header("Location: menu.php");
             exit;
         } else {
-            $error_message = "無効なユーザー名またはパスワードです。アカウントがない場合は、<a href='signup.php'>サインアップ</a>してください。";
+            $error_message = "無効なユーザー名またはパスワードです。<a href='signup.php'>サインアップ</a>してください。";
         }
     } catch (PDOException $e) {
         echo "データベース接続エラー: " . $e->getMessage();
     }
 }
 ?>
+
 
 <!DOCTYPE HTML>
 <html lang="ja">
